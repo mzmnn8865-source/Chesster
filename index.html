@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>شطرنج کاغذی</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Courier+Prime&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>♞ شطرنج کاغذی</h1>
+<main>
+  <section class="table"><div id="board"></div><div id="status">نوبت شماست</div></section>
+  <aside class="notebook">
+    <div class="row">
+      <select id="level">
+        <option value="0">مبتدی</option><option value="1">متوسط</option>
+        <option value="2">حرفه‌ای</option><option value="3" selected>استاد بزرگ</option>
+      </select>
+      <select id="color"><option value="w">سفید</option><option value="b">سیاه</option></select>
+    </div>
+    <div class="row">
+      <button id="new">بازی جدید</button><button id="undo">برگشت</button>
+      <button id="flip">چرخش</button><button id="resign">تسلیم</button>
+    </div>
+    <div class="cap" id="capW"></div><div class="cap" id="capB"></div>
+    <h3>تاریخچه حرکات</h3>
+    <ol id="moves"></ol>
+  </aside>
+</main>
+<div class="modal" id="promo"><div class="box"><p>ارتقای سرباز</p><div id="promoBtns"></div></div></div>
+<div class="modal" id="end"><div class="box"><h2 id="endMsg"></h2><button id="again">بازی جدید</button></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<script src="engine.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
