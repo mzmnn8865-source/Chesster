@@ -1,37 +1,194 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>شطرنج کاغذی</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Courier+Prime&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#3a2a1a">
+  <meta name="description" content="شطرنج کاغذی — یک بازی شطرنج زیبا با حال‌وهوای کاغذ و قهوه">
+  <title>♛ شطرنج کاغذی</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Lalezar&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<h1>♞ شطرنج کاغذی</h1>
-<main>
-  <section class="table"><div id="board"></div><div id="status">نوبت شماست</div></section>
-  <aside class="notebook">
-    <div class="row">
-      <select id="level">
-        <option value="0">مبتدی</option><option value="1">متوسط</option>
-        <option value="2">حرفه‌ای</option><option value="3" selected>استاد بزرگ</option>
-      </select>
-      <select id="color"><option value="w">سفید</option><option value="b">سیاه</option></select>
+<body data-theme="light">
+
+  <!-- ═══════════ دکمه‌های شناور ═══════════ -->
+  <div class="fabs" aria-label="کنترل‌های سریع">
+    <button class="fab" id="themeBtn" title="تغییر تم" aria-label="تغییر تم">
+      <span id="themeIcon" aria-hidden="true">🌙</span>
+    </button>
+    <button class="fab" id="soundBtn" title="صدا" aria-label="صدا">
+      <span id="soundIcon" aria-hidden="true">🔊</span>
+    </button>
+    <button class="fab" id="fullBtn" title="تمام‌صفحه" aria-label="تمام‌صفحه">
+      <span aria-hidden="true">⛶</span>
+    </button>
+  </div>
+
+  <!-- ═══════════ سربرگ ═══════════ -->
+  <header>
+    <h1><span class="crown" aria-hidden="true">♛</span> شطرنج کاغذی</h1>
+    <p class="subtitle">شطرنج با حال‌وهوای کاغذ و قهوه — ملکه‌ها آماده‌اند!</p>
+  </header>
+
+  <!-- ═══════════ بدنه ═══════════ -->
+  <main>
+
+    <!-- ─────── میز بازی ─────── -->
+    <section class="table-section" aria-label="میز بازی">
+
+      <!-- حریف (بالا) -->
+      <div class="player-card top" id="playerTop">
+        <div class="avatar" id="avatarTop" aria-hidden="true">♚</div>
+        <div class="pinfo">
+          <div class="pname" id="nameTop">حریف</div>
+          <div class="captured" id="capTop" aria-label="مهره‌های گرفته‌شده از شما"></div>
+        </div>
+        <div class="clock" id="clockTop" aria-live="off">—</div>
+      </div>
+
+      <!-- صفحه -->
+      <div class="board-container">
+        <div class="ranks" id="ranks" aria-hidden="true"></div>
+        <div id="board" class="board" role="grid" aria-label="صفحه شطرنج" tabindex="0"></div>
+        <div class="files" id="files" aria-hidden="true"></div>
+      </div>
+
+      <!-- شما (پایین) -->
+      <div class="player-card bottom" id="playerBottom">
+        <div class="avatar" id="avatarBottom" aria-hidden="true">♔</div>
+        <div class="pinfo">
+          <div class="pname" id="nameBottom">شما</div>
+          <div class="captured" id="capBottom" aria-label="مهره‌های گرفته‌شده از حریف"></div>
+        </div>
+        <div class="clock" id="clockBottom" aria-live="off">—</div>
+      </div>
+
+      <!-- وضعیت -->
+      <div id="status" class="status" aria-live="polite" role="status">
+        برای شروع، «بازی جدید» را بزنید
+      </div>
+    </section>
+
+    <!-- ─────── نوار کناری ─────── -->
+    <aside class="sidebar">
+
+      <!-- تنظیمات -->
+      <div class="panel">
+        <h3><span aria-hidden="true">⚙️</span> تنظیمات بازی</h3>
+        <div class="row">
+          <label for="level">سطح حریف</label>
+          <select id="level" aria-label="سطح حریف">
+            <option value="0">🌱 مبتدی</option>
+            <option value="1">🌿 متوسط</option>
+            <option value="2" selected>🌳 حرفه‌ای</option>
+            <option value="3">🔥 استاد</option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="color">رنگ شما</label>
+          <select id="color" aria-label="رنگ شما">
+            <option value="w" selected>♔ سفید</option>
+            <option value="b">♚ سیاه</option>
+            <option value="r">🎲 تصادفی</option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="timeControl">زمان</label>
+          <select id="timeControl" aria-label="کنترل زمان">
+            <option value="0">♾️ بدون محدودیت</option>
+            <option value="180">⚡ ۳ دقیقه</option>
+            <option value="300" selected>⏱️ ۵ دقیقه</option>
+            <option value="600">🕰️ ۱۰ دقیقه</option>
+            <option value="1800">🕰️ ۳۰ دقیقه</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- کنترل بازی -->
+      <div class="panel">
+        <h3><span aria-hidden="true">🎮</span> کنترل بازی</h3>
+        <div class="btn-grid">
+          <button id="new"    class="primary" title="شروع بازی جدید">🔄 بازی جدید</button>
+          <button id="undo"   title="برگشت حرکت">↩️ برگشت</button>
+          <button id="redo"   title="جلوی حرکت">↪️ جلو</button>
+          <button id="flip"   title="چرخش صفحه">🔃 چرخش</button>
+          <button id="hint"   title="راهنمای حرکت">💡 راهنما</button>
+          <button id="resign" class="danger" title="تسلیم">🏳️ تسلیم</button>
+        </div>
+      </div>
+
+      <!-- تاریخچه -->
+      <div class="panel moves-panel">
+        <h3><span aria-hidden="true">📜</span> تاریخچه حرکات</h3>
+        <ol id="moves" aria-label="تاریخچه حرکات"></ol>
+      </div>
+
+      <!-- ابزارها -->
+      <div class="panel">
+        <h3><span aria-hidden="true">💾</span> ابزارها</h3>
+        <div class="btn-grid">
+          <button id="save"   title="ذخیره بازی">💾 ذخیره</button>
+          <button id="load"   title="بارگذاری بازی">📂 بارگذاری</button>
+          <button id="pgnBtn" title="نمایش PGN">📋 PGN</button>
+          <button id="fenBtn" title="نمایش FEN">🔤 FEN</button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ═══════════ پاورقی ═══════════ -->
+  <footer>
+    <span>ساخته‌شده با <span class="heart" aria-hidden="true">♥</span> — شطرنج کاغذی</span>
+  </footer>
+
+  <!-- ═══════════ مودال ارتقای سرباز ═══════════ -->
+  <div class="modal" id="promo" role="dialog" aria-modal="true" aria-labelledby="promoTitle">
+    <div class="modal-box">
+      <h2 id="promoTitle">ارتقای سرباز</h2>
+      <p>مهره‌ی جدید را انتخاب کنید</p>
+      <div id="promoBtns" class="promo-btns"></div>
+      <div class="modal-actions">
+        <button id="promoCancel" class="secondary">انصراف</button>
+      </div>
     </div>
-    <div class="row">
-      <button id="new">بازی جدید</button><button id="undo">برگشت</button>
-      <button id="flip">چرخش</button><button id="resign">تسلیم</button>
+  </div>
+
+  <!-- ═══════════ مودال پایان بازی ═══════════ -->
+  <div class="modal" id="end" role="dialog" aria-modal="true" aria-labelledby="endTitle">
+    <div class="modal-box">
+      <div class="end-icon" id="endIcon" aria-hidden="true">🏆</div>
+      <h2 id="endTitle">پایان بازی</h2>
+      <p id="endMsg" class="end-msg"></p>
+      <div class="modal-actions">
+        <button id="again"  class="primary">🔄 بازی جدید</button>
+        <button id="review" class="secondary">👀 مرور بازی</button>
+      </div>
     </div>
-    <div class="cap" id="capW"></div><div class="cap" id="capB"></div>
-    <h3>تاریخچه حرکات</h3>
-    <ol id="moves"></ol>
-  </aside>
-</main>
-<div class="modal" id="promo"><div class="box"><p>ارتقای سرباز</p><div id="promoBtns"></div></div></div>
-<div class="modal" id="end"><div class="box"><h2 id="endMsg"></h2><button id="again">بازی جدید</button></div></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-<script src="engine.js"></script>
-<script src="script.js"></script>
+  </div>
+
+  <!-- ═══════════ مودال متن (PGN/FEN/ذخیره/بارگذاری) ═══════════ -->
+  <div class="modal" id="textModal" role="dialog" aria-modal="true" aria-labelledby="textTitle">
+    <div class="modal-box wide">
+      <h2 id="textTitle">متن</h2>
+      <textarea id="textArea" rows="10" dir="ltr" spellcheck="false"></textarea>
+      <div class="modal-actions">
+        <button id="textCopy" class="secondary">📋 کپی</button>
+        <button id="textOk"  class="primary">تأیید</button>
+        <button id="textCancel" class="secondary">انصراف</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- کانفتی (جشن برد) -->
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <!-- اسکریپت‌ها -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+  <script src="engine.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
